@@ -19,17 +19,18 @@ $(document).ready(function(){
 
 		var that = this;
 
-		this.QUIZZ_CONTAINER_CLASS = ".quizz-container";
-		this.QUIZZ_TITLE_CLASS = ".quizz-title";
-		this.QUIZZ_TIMER_CLASS = ".quizz-timer";
-		this.QUIZZ_CONTAINER_CLASS = ".quizz-question-container";
-		this.QUIZZ_FORM_CLASS = ".quizz-form";
-		this.QUIZZ_QUESTION_CLASS = ".quizz-question";
-		this.QUIZZ_BUTTON_START_CLASS = ".quizz-button-start";
-		this.QUIZZ_BUTTON_BACK_CLASS = ".quizz-button-back";
-		this.QUIZZ_BUTTON_NEXT_CLASS = ".quizz-button-next";
-		this.QUIZZ_BUTTON_SAVE_CLASS = ".quizz-button-save";
-		this.QUIZZ_BUTTON_SUBMIT_CLASS = ".quizz-button-submit";
+		this.QUIZZ_CONTAINER_CLASS = "quizz-container";
+		this.QUIZZ_TITLE_CLASS = "quizz-title";
+		this.QUIZZ_TIMER_CLASS = "quizz-timer";
+		this.QUIZZ_QUESTION_CONTAINER_CLASS = "quizz-question-container";
+		this.QUIZZ_FORM_CLASS = "quizz-form";
+		this.QUIZZ_QUESTION_CLASS = "quizz-question";
+		this.QUIZZ_ANSWER_OPTION = "answer-option";
+		this.QUIZZ_BUTTON_START_CLASS = "quizz-button-start";
+		this.QUIZZ_BUTTON_BACK_CLASS = "quizz-button-back";
+		this.QUIZZ_BUTTON_NEXT_CLASS = "quizz-button-next";
+		this.QUIZZ_BUTTON_SAVE_CLASS = "quizz-button-save";
+		this.QUIZZ_BUTTON_SUBMIT_CLASS = "quizz-button-submit";
 
 		this.CONTAINER_ID = "quizz-container";
 		this.QUESTION_PARAGRAPH_ID = "quizz-container";
@@ -49,12 +50,12 @@ $(document).ready(function(){
 
 		this.targetElement = $("#"+targetId);
 		this.targetElement.addClass(this.QUIZZ_CONTAINER_CLASS);
+		this.targetElement.addClass("card");
 		this.quizzTitle = $("<h3>"+quizzContent.quizzName+"</h3>");
 		this.quizzTitle.addClass(this.QUIZZ_TITLE_CLASS);
-		this.quizzTime = $("<span id='"+this.QUIZZ_TIME_ID+"'></span>").text(quizzContent.quizzTime);
-		this.quizzTime.addClass(this.QUIZZ_TIMER_CLASS);
+		this.quizzTime = $("<span id='"+this.QUIZZ_TIME_ID+"'></span>").text(getFormattedTime(quizzContent.quizzTime));
 		this.quizzQuestionContainer = $("<div id='"+CONTAINER_ID+"'></div>");
-		this.quizzQuestionContainer.addClass(this.QUIZZ_CONTAINER_CLASS);
+		this.quizzQuestionContainer.addClass(this.QUIZZ_QUESTION_CONTAINER_CLASS);
 		this.questionParagraph = $("<p id='"+QUESTION_PARAGRAPH_ID+"'></p>");
 		this.questionParagraph.addClass(this.QUIZZ_QUESTION_CLASS);
 		this.answerForm = $("<form id='"+FORM_ID+"'></form>");
@@ -62,8 +63,14 @@ $(document).ready(function(){
 
 		this.quizzQuestionContainer.append(this.questionParagraph);
 		this.quizzQuestionContainer.append(this.answerForm);
+		
+		this.quizzTimeContainer = $("<div></div>");
+		this.quizzTimeContainer.addClass(this.QUIZZ_TIMER_CLASS);
+		this.quizzTimeContainer.append($("<i class='fa fa-clock-o'>"));
+		this.quizzTimeContainer.append(this.quizzTime);
+
 		this.targetElement.append(this.quizzTitle);
-		this.targetElement.append(this.quizzTime);
+		this.targetElement.append(this.quizzTimeContainer);
 		this.targetElement.append(this.quizzQuestionContainer);
 
 		this.startButton = $("<input type='button' value='start quizz'></input>");
@@ -80,13 +87,23 @@ $(document).ready(function(){
 					that.quizzQuestionContainer.empty();
 					that.quizzQuestionContainer.append($("<p>Quizz is Over</p>"));
 				}else{
-					that.quizzTime.text(that.timeCounter);	
+					that.quizzTime.text(getFormattedTime(that.timeCounter));	
 				}
 			}, 1000)
 		});
 
 		this.quizzQuestionContainer.append(this.startButton);
 
+		function pad (str, max) {
+			str = str.toString();
+			return str.length < max ? pad("0" + str, max) : str;
+		}
+
+		function getFormattedTime(timeSeconds){
+			var minutes = Math.floor(timeSeconds / 60);
+			var seconds = timeSeconds % 60;
+			return pad(minutes,2)+":"+pad(seconds,2);
+		}
 		
 		function submitQuizz(){
 			clearInterval(that.timer);
@@ -96,20 +113,27 @@ $(document).ready(function(){
 
 		console.log("Quizz title: "+JSON.stringify(that.quizzTitle));
 		function createActualQuestion(){
-			console.log("actual question "+that.actualQuestion);
+			
 			var question = that.quizz.questions[that.actualQuestion];
 			//Clean the form to fill with the new options
 			that.answerForm.empty();
 
 			//Configure the question enunciate
-			that.questionParagraph.text(question.question);
+			that.questionParagraph.text((that.actualQuestion+1)+". "+question.question);
 			if(question.type.toUpperCase() == 'M'){
 
 				for(var index = 0; index < question.options.length; index++){
 					var actualAnswer = question.options[index];
-					that.answerForm.append(actualAnswer.key);
-					that.answerForm.append($("<input type='radio' name='"+that.RADIO_GROUP_NAME+"' value='"+actualAnswer.key+"'>"));
-					that.answerForm.append(actualAnswer.value);
+
+					var answerOption = $("<div></div>");
+					answerOption.addClass(that.QUIZZ_ANSWER_OPTION);
+
+					answerOption.append($("<label for='r"+actualAnswer.key+"'>"+actualAnswer.key+") </label>"));
+					answerOption.append($("<input type='radio' name='"+that.RADIO_GROUP_NAME+"' id='r"+actualAnswer.key
+						+"' value='"+actualAnswer.key+"'>"));
+					answerOption.append($("<span></span>").text(actualAnswer.value));
+
+					that.answerForm.append(answerOption)
 
 				}
 			}else{

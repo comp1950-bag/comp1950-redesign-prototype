@@ -432,3 +432,62 @@ table.dataTable thead .sorting:after {
     border-left-width: 0;
   }
 }
+
+
+/*Css for quizzez*/
+.quizz-container{
+  display: relative;
+  width: 95%;
+  margin: 0px auto;
+  padding: 20px;
+  border:1px solid #444444;
+}
+.guizz-header{
+  display: inline-block;
+}
+.quizz-title{
+  display: inline-block;
+  width: 80%;
+  text-align: left;
+}
+.quizz-timer{
+  display: inline-block;
+  width: 20%;
+  text-align: right;
+}
+.quizz-timer * {
+  display: inline-block;
+  margin: 5px;
+}
+.quizz-question-container{
+
+}
+#quizz-answer-textarea{
+  display: block;
+}
+.answer-option label {
+  margin-right: 10px;
+}
+.answer-option span {
+  margin-left: 10px;
+}
+.quizz-button-start{
+  margin: 10px;
+  margin-left: 0px;
+}
+.quizz-button-back{
+  margin: 10px;
+  margin-left: 0px;
+}
+.quizz-button-next{
+  margin: 10px;
+  margin-left: 0px;
+}
+.quizz-button-save{
+  margin: 10px;
+  margin-left: 0px;
+}
+.quizz-button-submit{
+  margin: 10px;
+  margin-left: 0px;
+}
