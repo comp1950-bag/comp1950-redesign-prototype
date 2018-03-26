@@ -19,10 +19,23 @@ $(document).ready(function(){
 
 		var that = this;
 
+		this.QUIZZ_CONTAINER_CLASS = ".quizz-container";
+		this.QUIZZ_TITLE_CLASS = ".quizz-title";
+		this.QUIZZ_TIMER_CLASS = ".quizz-timer";
+		this.QUIZZ_CONTAINER_CLASS = ".quizz-question-container";
+		this.QUIZZ_FORM_CLASS = ".quizz-form";
+		this.QUIZZ_QUESTION_CLASS = ".quizz-question";
+		this.QUIZZ_BUTTON_START_CLASS = ".quizz-button-start";
+		this.QUIZZ_BUTTON_BACK_CLASS = ".quizz-button-back";
+		this.QUIZZ_BUTTON_NEXT_CLASS = ".quizz-button-next";
+		this.QUIZZ_BUTTON_SAVE_CLASS = ".quizz-button-save";
+		this.QUIZZ_BUTTON_SUBMIT_CLASS = ".quizz-button-submit";
+
 		this.CONTAINER_ID = "quizz-container";
 		this.QUESTION_PARAGRAPH_ID = "quizz-container";
 		this.QUIZZ_TIME_ID = "quizz-time";
 		this.FORM_ID = "quizz-form";
+		this.ANSWER_TEXTAREA_ID = "quizz-answer-textarea";
 		this.BACK_BUTTON_ID = "quizz-back-button";
 		this.NEXT_BUTTON_ID = "quizz-next-button";
 		this.SAVE_BUTTON_ID = "quizz-save-button";
@@ -35,19 +48,26 @@ $(document).ready(function(){
 		this.timer = null;
 
 		this.targetElement = $("#"+targetId);
+		this.targetElement.addClass(this.QUIZZ_CONTAINER_CLASS);
 		this.quizzTitle = $("<h3>"+quizzContent.quizzName+"</h3>");
+		this.quizzTitle.addClass(this.QUIZZ_TITLE_CLASS);
 		this.quizzTime = $("<span id='"+this.QUIZZ_TIME_ID+"'></span>").text(quizzContent.quizzTime);
-		this.quizzContainer = $("<div id='"+CONTAINER_ID+"'></div>");
+		this.quizzTime.addClass(this.QUIZZ_TIMER_CLASS);
+		this.quizzQuestionContainer = $("<div id='"+CONTAINER_ID+"'></div>");
+		this.quizzQuestionContainer.addClass(this.QUIZZ_CONTAINER_CLASS);
 		this.questionParagraph = $("<p id='"+QUESTION_PARAGRAPH_ID+"'></p>");
-		this.formParagraph = $("<form id='"+FORM_ID+"'></form>");
+		this.questionParagraph.addClass(this.QUIZZ_QUESTION_CLASS);
+		this.answerForm = $("<form id='"+FORM_ID+"'></form>");
+		this.answerForm.addClass(this.QUIZZ_FORM_CLASS);
 
-		this.quizzContainer.append(this.questionParagraph);
-		this.quizzContainer.append(this.formParagraph);
+		this.quizzQuestionContainer.append(this.questionParagraph);
+		this.quizzQuestionContainer.append(this.answerForm);
 		this.targetElement.append(this.quizzTitle);
 		this.targetElement.append(this.quizzTime);
-		this.targetElement.append(this.quizzContainer);
+		this.targetElement.append(this.quizzQuestionContainer);
 
 		this.startButton = $("<input type='button' value='start quizz'></input>");
+		this.startButton.addClass(this.QUIZZ_BUTTON_START_CLASS);
 		this.startButton.click(function(){
 			this.remove();
 			createActualQuestion();
@@ -57,64 +77,107 @@ $(document).ready(function(){
 					alert("Time is out");
 					//Call function to end the quizz;
 					clearInterval(that.timer);
-					that.quizzContainer.empty();
-					that.quizzContainer.append($("<p>Quizz is Over</p>"));
+					that.quizzQuestionContainer.empty();
+					that.quizzQuestionContainer.append($("<p>Quizz is Over</p>"));
 				}else{
 					that.quizzTime.text(that.timeCounter);	
 				}
 			}, 1000)
 		});
 
-		this.quizzContainer.append(this.startButton);
+		this.quizzQuestionContainer.append(this.startButton);
 
 		
+		function submitQuizz(){
+			clearInterval(that.timer);
+			that.quizzQuestionContainer.empty();
+			that.quizzQuestionContainer.append($("<p>Quizz successfully submitted</p>"));
+		}
+
 		console.log("Quizz title: "+JSON.stringify(that.quizzTitle));
 		function createActualQuestion(){
 			console.log("actual question "+that.actualQuestion);
 			var question = that.quizz.questions[that.actualQuestion];
 			//Clean the form to fill with the new options
-			that.formParagraph.empty();
+			that.answerForm.empty();
 
 			//Configure the question enunciate
 			that.questionParagraph.text(question.question);
-			console.log("question.options.length: "+question.options.length);
-			
-			for(var index = 0; index < question.options.length; index++){
-				var actualAnswer = question.options[index];
-				that.formParagraph.append(actualAnswer.key);
-				that.formParagraph.append($("<input type='radio' name='"+RADIO_GROUP_NAME+"' value='"+actualAnswer.key+"'>"));
-				that.formParagraph.append(actualAnswer.value);
-				
-			}
+			if(question.type.toUpperCase() == 'M'){
 
+				for(var index = 0; index < question.options.length; index++){
+					var actualAnswer = question.options[index];
+					that.answerForm.append(actualAnswer.key);
+					that.answerForm.append($("<input type='radio' name='"+that.RADIO_GROUP_NAME+"' value='"+actualAnswer.key+"'>"));
+					that.answerForm.append(actualAnswer.value);
+
+				}
+			}else{
+				
+				that.answerForm.append($("<textarea rows='10' cols='60' id='"+that.ANSWER_TEXTAREA_ID+"'></textarea>"));
+			}
 			if(that.actualQuestion > 0){
 				that.backButton = $("<input type='button' value='back'></input>");
+				that.backButton.addClass(that.QUIZZ_BUTTON_BACK_CLASS);
 				that.backButton.click(function(){
 					that.actualQuestion = that.actualQuestion-1;
 					createActualQuestion();
 				});
 
-				that.formParagraph.append(that.backButton);
+				that.answerForm.append(that.backButton);
 			}
 			if(that.actualQuestion < (that.quizz.questions.length-1)){
 				that.nextButton = $("<input type='button' value='next'></input>");
+				that.nextButton.addClass(that.QUIZZ_BUTTON_NEXT_CLASS);
 				that.nextButton.click(function(){
 					that.actualQuestion = that.actualQuestion+1;
 					createActualQuestion();
 				});
-				that.formParagraph.append(that.nextButton);
+				that.answerForm.append(that.nextButton);
 			}
 			that.saveButton = $("<input type='button' value='save'></input>");
+			that.saveButton.addClass(that.QUIZZ_BUTTON_SAVE_CLASS);
 			that.saveButton.click(function(){
 				console.log("Before save: "+JSON.stringify(that.quizz.questions[that.actualQuestion]));
-				var selected = $('input[name='+that.RADIO_GROUP_NAME+']:checked').val();
-				that.quizz.questions[that.actualQuestion].studentAnswer = selected;
+				var answer = undefined;
+				if(question.type.toUpperCase() == 'M'){
+					answer = $('input[name='+that.RADIO_GROUP_NAME+']:checked').val();
+				}else{
+					answer = $("#"+that.ANSWER_TEXTAREA_ID).val();
+				}
+				
+				that.quizz.questions[that.actualQuestion].studentAnswer = answer;
 				console.log("After save: "+JSON.stringify(that.quizz.questions[that.actualQuestion]));
 			});
-			that.formParagraph.append(that.saveButton);
+			that.answerForm.append(that.saveButton);
+
+			that.submitButton = $("<input type='button' value='submit'></input>");
+			that.submitButton.addClass(that.QUIZZ_BUTTON_SUBMIT_CLASS);
+			that.submitButton.click(function(){
+				var countNoAnswers = 0;
+				for(var index = 0; index < that.quizz.questions.length; index++){
+					if(that.quizz.questions[index].studentAnswer == undefined){
+						countNoAnswers++;
+					}
+				}
+				if(countNoAnswers > 0){
+					if (confirm('You have '+countNoAnswers+' unsubmitted answer(a). Are you sure you want to procced?')) {
+						//Continue to submit
+					} else {
+						return false;
+					}
+				}
+				submitQuizz();
+				
+			});
+			that.answerForm.append(that.submitButton);
 
 			if(question.studentAnswer){
-				$('input[name='+that.RADIO_GROUP_NAME+'][value='+question.studentAnswer+']').prop('checked', true);
+				if(question.type.toUpperCase() == 'M'){
+					$('input[name='+that.RADIO_GROUP_NAME+'][value='+question.studentAnswer+']').prop('checked', true);	
+				}else{
+					$("#"+that.ANSWER_TEXTAREA_ID).text(question.studentAnswer);
+				}
 			}
 			
 		}
@@ -122,10 +185,11 @@ $(document).ready(function(){
 
 	var myquizz = { 
 		quizzName: "quizz 1",
-		quizzTime: 10,
+		quizzTime: 300,
 		questions: [
 		{
 			question: "How do you write an 'On Ready' statment in Jquery?",
+			type:"m",
 			options: [
 			{
 				key: "A",
@@ -141,6 +205,7 @@ $(document).ready(function(){
 		},
 		{
 			question: "What is bootstrap?",
+			type:"m",
 			options: [
 			{
 				key: "A",
@@ -153,6 +218,10 @@ $(document).ready(function(){
 			],
 			studentAnswer: undefined,
 			rightQuestionKey: "A"
+		},
+		{
+			question: "Describe the web development process",
+			type:"o"
 		},
 		]
 	}
