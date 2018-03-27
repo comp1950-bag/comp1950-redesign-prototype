@@ -1,0 +1,15 @@
+/*
+ * Authors:
+ * Gustavo Rocha de Almeida Guimaraes
+ * Arthur de Medeiros Fernandes
+ * Benedict Chan
+ *
+ */
+
+ul {
+  list-style: inherit;  
+}
+
+main li {
+	margin-left: 1em;
+}
