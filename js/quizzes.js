@@ -1,9 +1,14 @@
 $(document).ready(function(){
+
+	var actualQuizz = undefined;
+
 	window.createQuizzById = function(targetId, quizzId){
-		for(var index = 0; index < quizzes.length; index++){
-			if(quizzId == quizzes[index].quizzId){
-				createQuizz(targetId, quizzes[index]);
-			}
+		if(!actualQuizz){
+			for(var index = 0; index < quizzes.length; index++){
+				if(quizzId == quizzes[index].quizzId){
+					actualQuizz = createQuizz(targetId, quizzes[index]);
+				}
+			}	
 		}
 	}
 	function createQuizz(targetId, quizzContent){
@@ -167,7 +172,7 @@ $(document).ready(function(){
 				}
 			}else{
 				
-				that.answerForm.append($("<textarea rows='10' cols='60' id='"+that.ANSWER_TEXTAREA_ID+"'></textarea>"));
+				that.answerForm.append($("<textarea id='"+that.ANSWER_TEXTAREA_ID+"'></textarea>"));
 			}
 			that.saveButton = $("<span class='fa fa-save'> Save </span>");
 			that.saveButton.addClass(that.QUIZZ_BUTTON_SAVE_CLASS);
@@ -215,6 +220,7 @@ $(document).ready(function(){
 			}
 			
 		}
+		return that;
 	}
 
 	var quizzes = [{ 

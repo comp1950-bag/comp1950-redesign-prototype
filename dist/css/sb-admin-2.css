@@ -435,6 +435,11 @@ table.dataTable thead .sorting:after {
 
 
 /*Css for quizzez*/
+#quizz-answer-textarea{
+  display: block;
+  margin: 0px auto;
+  width: 95%;
+}
 .quizz-container{
   display: relative;
   width: 95%;
@@ -477,9 +482,7 @@ table.dataTable thead .sorting:after {
   font-weight: bold;
   text-align: center;
 }
-#quizz-answer-textarea{
-  display: block;
-}
+
 .answer-option label {
   margin-right: 10px;
 }
