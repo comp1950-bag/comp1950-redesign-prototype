@@ -432,3 +432,101 @@ table.dataTable thead .sorting:after {
     border-left-width: 0;
   }
 }
+
+
+/*Css for quizzez*/
+.quizz-container{
+  display: relative;
+  width: 95%;
+  margin: 0px auto;
+  padding: 20px;
+  border:1px solid #444444;
+}
+.guizz-header{
+  display: inline-block;
+}
+.quizz-title{
+  display: inline-block;
+  width: 80%;
+  text-align: left;
+}
+.quizz-timer{
+  display: inline-block;
+  width: 20%;
+  text-align: right;
+}
+.quizz-timer * {
+  display: inline-block;
+  margin: 5px;
+}
+.quizz-question-container{
+  padding-bottom: 20px;
+}
+
+.quizz-question-container p{
+  width: 100%;
+}
+.quizz-question-container form{
+  clear: both;
+}
+.quizz-question{
+  display: inline-block;
+  margin: 20px 0px;
+  position: relative;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: center;
+}
+#quizz-answer-textarea{
+  display: block;
+}
+.answer-option label {
+  margin-right: 10px;
+}
+.answer-option span {
+  margin-left: 10px;
+}
+.quizz-button-start{
+  margin: 10px;
+  margin-left: 0px;
+  cursor:pointer;
+}
+.quizz-button-back{
+  margin: 10px;
+  margin-left: 0px;
+  float: left;
+  color: #335577;
+  cursor:pointer;
+}
+.quizz-button-next{
+  margin: 10px;
+  margin-left: 0px;
+  float: right;
+  color: #335577;
+  cursor:pointer;
+}
+.quizz-button-save{
+  margin-left: 20px;
+  margin-top: 10px;
+  color: #226644;
+  cursor:pointer;
+  float: right;
+}
+.quizz-button-submit{
+  margin-left: 20px;
+  margin-top: 10px;
+  cursor:pointer;
+  float: right;
+}
+.available-quizz{
+    border: 2px solid #ddaaaa;
+    background-color: #ffdbbb;
+}
+.table-quizz{
+  width: 95%;
+  margin: 0px auto;
+}
+.table-quizz td:nth-of-type(5){
+  font-size: 1.5em;
+  cursor: pointer;
+}

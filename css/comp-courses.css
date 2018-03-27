@@ -432,3 +432,80 @@ table.dataTable thead .sorting:after {
     border-left-width: 0;
   }
 }
+
+
+/*Css for quizzez*/
+.quizz-container{
+  display: relative;
+  width: 95%;
+  margin: 0px auto;
+  padding: 20px;
+  border:1px solid #444444;
+}
+.guizz-header{
+  display: inline-block;
+}
+.quizz-title{
+  display: inline-block;
+  width: 80%;
+  text-align: left;
+}
+.quizz-timer{
+  display: inline-block;
+  width: 20%;
+  text-align: right;
+}
+.quizz-timer * {
+  display: inline-block;
+  margin: 5px;
+}
+.quizz-question-container{
+
+}
+.quizz-question{
+  display: inline-block;
+  margin: 20px;
+  position: relative;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+#quizz-answer-textarea{
+  display: block;
+}
+.answer-option label {
+  margin-right: 10px;
+}
+.answer-option span {
+  margin-left: 10px;
+}
+.quizz-button-start{
+  margin: 10px;
+  margin-left: 0px;
+  cursor:pointer;
+}
+.quizz-button-back{
+  margin: 10px;
+  margin-left: 0px;
+  color: #335577;
+  cursor:pointer;
+}
+.quizz-button-next{
+  margin: 10px;
+  margin-left: 0px;
+  color: #335577;
+  cursor:pointer;
+}
+.quizz-button-save{
+  margin: 10px;
+  margin-left: 0px;
+  color: #226644;
+  cursor:pointer;
+}
+.quizz-button-submit{
+  margin: 10px;
+  margin-left: 20px;
+  cursor:pointer;
+}
+.table-quizz td:nth-of-type(5){
+  color: red;
+}
