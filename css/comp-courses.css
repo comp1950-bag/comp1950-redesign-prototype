@@ -462,6 +462,13 @@ table.dataTable thead .sorting:after {
 .quizz-question-container{
 
 }
+.quizz-question{
+  display: inline-block;
+  margin: 20px;
+  position: relative;
+  font-size: 1.2em;
+  font-weight: bold;
+}
 #quizz-answer-textarea{
   display: block;
 }
@@ -474,20 +481,31 @@ table.dataTable thead .sorting:after {
 .quizz-button-start{
   margin: 10px;
   margin-left: 0px;
+  cursor:pointer;
 }
 .quizz-button-back{
   margin: 10px;
   margin-left: 0px;
+  color: #335577;
+  cursor:pointer;
 }
 .quizz-button-next{
   margin: 10px;
   margin-left: 0px;
+  color: #335577;
+  cursor:pointer;
 }
 .quizz-button-save{
   margin: 10px;
   margin-left: 0px;
+  color: #226644;
+  cursor:pointer;
 }
 .quizz-button-submit{
   margin: 10px;
-  margin-left: 0px;
+  margin-left: 20px;
+  cursor:pointer;
+}
+.table-quizz td:nth-of-type(5){
+  color: red;
 }

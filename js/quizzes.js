@@ -1,5 +1,11 @@
 $(document).ready(function(){
-
+	window.createQuizzById = function(targetId, quizzId){
+		for(var index = 0; index < quizzes.length; index++){
+			if(quizzId == quizzes[index].quizzId){
+				createQuizz(targetId, quizzes[index]);
+			}
+		}
+	}
 	function createQuizz(targetId, quizzContent){
 
 		/* 
@@ -33,7 +39,7 @@ $(document).ready(function(){
 		this.QUIZZ_BUTTON_SUBMIT_CLASS = "quizz-button-submit";
 
 		this.CONTAINER_ID = "quizz-container";
-		this.QUESTION_PARAGRAPH_ID = "quizz-container";
+		this.QUESTION_PARAGRAPH_ID = "quizz-container-paragraph";
 		this.QUIZZ_TIME_ID = "quizz-time";
 		this.FORM_ID = "quizz-form";
 		this.ANSWER_TEXTAREA_ID = "quizz-answer-textarea";
@@ -56,13 +62,6 @@ $(document).ready(function(){
 		this.quizzTime = $("<span id='"+this.QUIZZ_TIME_ID+"'></span>").text(getFormattedTime(quizzContent.quizzTime));
 		this.quizzQuestionContainer = $("<div id='"+CONTAINER_ID+"'></div>");
 		this.quizzQuestionContainer.addClass(this.QUIZZ_QUESTION_CONTAINER_CLASS);
-		this.questionParagraph = $("<p id='"+QUESTION_PARAGRAPH_ID+"'></p>");
-		this.questionParagraph.addClass(this.QUIZZ_QUESTION_CLASS);
-		this.answerForm = $("<form id='"+FORM_ID+"'></form>");
-		this.answerForm.addClass(this.QUIZZ_FORM_CLASS);
-
-		this.quizzQuestionContainer.append(this.questionParagraph);
-		this.quizzQuestionContainer.append(this.answerForm);
 		
 		this.quizzTimeContainer = $("<div></div>");
 		this.quizzTimeContainer.addClass(this.QUIZZ_TIMER_CLASS);
@@ -111,15 +110,45 @@ $(document).ready(function(){
 			that.quizzQuestionContainer.append($("<p>Quizz successfully submitted</p>"));
 		}
 
-		console.log("Quizz title: "+JSON.stringify(that.quizzTitle));
 		function createActualQuestion(){
 			
+			that.quizzQuestionContainer.empty();
+
+			that.questionParagraph = $("<p id='"+QUESTION_PARAGRAPH_ID+"'></p>");
+			that.questionParagraph.addClass(that.QUIZZ_QUESTION_CLASS);
+			that.answerForm = $("<form id='"+FORM_ID+"'></form>");
+			that.answerForm.addClass(that.QUIZZ_FORM_CLASS);
+
+
 			var question = that.quizz.questions[that.actualQuestion];
-			//Clean the form to fill with the new options
-			that.answerForm.empty();
 
 			//Configure the question enunciate
 			that.questionParagraph.text((that.actualQuestion+1)+". "+question.question);
+			that.quizzQuestionContainer.append(that.questionParagraph);
+			
+			if(that.actualQuestion > 0){
+				that.backButton = $("<span class='fa fa-arrow-circle-left'> Back </span>");
+				that.backButton.addClass(that.QUIZZ_BUTTON_BACK_CLASS);
+				that.backButton.click(function(){
+					that.actualQuestion = that.actualQuestion-1;
+					createActualQuestion();
+				});
+
+				that.quizzQuestionContainer.append(that.backButton);
+			}
+			
+			if(that.actualQuestion < (that.quizz.questions.length-1)){
+				that.nextButton = $("<span class='fa fa-arrow-circle-right'> Next </span>");
+				that.nextButton.addClass(that.QUIZZ_BUTTON_NEXT_CLASS);
+				that.nextButton.click(function(){
+					that.actualQuestion = that.actualQuestion+1;
+					createActualQuestion();
+				});
+				that.quizzQuestionContainer.append(that.nextButton);
+			}
+
+			that.quizzQuestionContainer.append(that.answerForm);
+
 			if(question.type.toUpperCase() == 'M'){
 
 				for(var index = 0; index < question.options.length; index++){
@@ -140,26 +169,7 @@ $(document).ready(function(){
 				
 				that.answerForm.append($("<textarea rows='10' cols='60' id='"+that.ANSWER_TEXTAREA_ID+"'></textarea>"));
 			}
-			if(that.actualQuestion > 0){
-				that.backButton = $("<input type='button' value='back'></input>");
-				that.backButton.addClass(that.QUIZZ_BUTTON_BACK_CLASS);
-				that.backButton.click(function(){
-					that.actualQuestion = that.actualQuestion-1;
-					createActualQuestion();
-				});
-
-				that.answerForm.append(that.backButton);
-			}
-			if(that.actualQuestion < (that.quizz.questions.length-1)){
-				that.nextButton = $("<input type='button' value='next'></input>");
-				that.nextButton.addClass(that.QUIZZ_BUTTON_NEXT_CLASS);
-				that.nextButton.click(function(){
-					that.actualQuestion = that.actualQuestion+1;
-					createActualQuestion();
-				});
-				that.answerForm.append(that.nextButton);
-			}
-			that.saveButton = $("<input type='button' value='save'></input>");
+			that.saveButton = $("<span class='fa fa-save'> Save </span>");
 			that.saveButton.addClass(that.QUIZZ_BUTTON_SAVE_CLASS);
 			that.saveButton.click(function(){
 				console.log("Before save: "+JSON.stringify(that.quizz.questions[that.actualQuestion]));
@@ -175,7 +185,7 @@ $(document).ready(function(){
 			});
 			that.answerForm.append(that.saveButton);
 
-			that.submitButton = $("<input type='button' value='submit'></input>");
+			that.submitButton = $("<span class='fa fa-send'> Submit </span>");
 			that.submitButton.addClass(that.QUIZZ_BUTTON_SUBMIT_CLASS);
 			that.submitButton.click(function(){
 				var countNoAnswers = 0;
@@ -207,7 +217,8 @@ $(document).ready(function(){
 		}
 	}
 
-	var myquizz = { 
+	var quizzes = [{ 
+		quizzId: "q01",
 		quizzName: "quizz 1",
 		quizzTime: 300,
 		questions: [
@@ -248,8 +259,110 @@ $(document).ready(function(){
 			type:"o"
 		},
 		]
-	}
-
-	createQuizz("comp-quizz", myquizz);
+	},
+	{ 
+		quizzId: "q02",
+		quizzName: "Quizz 2",
+		quizzTime: 300,
+		questions: [
+		{
+			question: "Name on brand of HTTP server (1 mark):",
+			type:"o"
+		},
+		{
+			question: "Describe one advantage of implementing an error 404 page (2 marks):",
+			type:"o"
+		},
+		{
+			question: "Which of the following is an example of PHP declaration (1 mark):",
+			type:"m",
+			options: [
+			{
+				key: "A",
+				value: "<!--#include file='header.php'-->"
+			},
+			{
+				key: "B",
+				value: "<php ?>"
+			},
+			{
+				key: "C",
+				value: "<?php php?>"
+			},
+			{
+				key: "D",
+				value: "<?php php>"
+			}
+			],
+			studentAnswer: undefined,
+			rightQuestionKey: "C"
+		},
+		{
+			question: "One use of server-side scripting could be to display the current date."
+			+"Describe another case where a developer might use server-side scripting (3 marks):",
+			type:"o"
+		},
+		{
+			question: "The HTTP servers of all web host providers support PHP (1 mark):",
+			type:"m",
+			options: [
+			{
+				key: "A",
+				value: "true"
+			},
+			{
+				key: "B",
+				value: "false"
+			}
+			],
+			studentAnswer: undefined,
+			rightQuestionKey: "B"
+		},
+		{
+			question: "The filename for configuring an Apache server is (1 mark):",
+			type:"m",
+			options: [
+			{
+				key: "A",
+				value: "apache.ini"
+			},
+			{
+				key: "B",
+				value: "apache.conf"
+			},
+			{
+				key: "C",
+				value: "html.conf"
+			},
+			{
+				key: "D",
+				value: ".htaccess"
+			}
+			],
+			studentAnswer: undefined,
+			rightQuestionKey: "D"
+		},
+		{
+			question: "In server-side scripting the conditional execution of code can be accomplished using (1 mark):",
+			type:"m",
+			options: [
+			{
+				key: "A",
+				value: "an if statment"
+			},
+			{
+				key: "B",
+				value: "a choice tree"
+			},
+			{
+				key: "C",
+				value: "forked code"
+			}
+			],
+			studentAnswer: undefined,
+			rightQuestionKey: "A"
+		},
+		]
+	}]
 
 })
