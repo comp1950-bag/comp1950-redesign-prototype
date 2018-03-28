@@ -3,13 +3,89 @@
  * Gustavo Rocha de Almeida Guimaraes
  * Arthur de Medeiros Fernandes
  * Benedict Chan
- *
  */
 
+main {
+    font-family: Verdana, sans-serif;
+}
+
+main img {
+    border: 1px solid black;
+    box-sizing: border-box;
+    margin: 2px;
+}
 ul {
-  list-style: inherit;  
+  list-style: inherit;
 }
 
 main li {
 	margin-left: 1em;
+}
+
+.fa {
+    position: relative;
+    top: 2px;
+    font-size: 1.5em;
+}
+
+.fa-search {
+    top: 0;
+    font-size: inherit;
+}
+
+/* styles for printers */
+@media print {
+
+    /* remove panel borders */
+    .panel {
+        border: none !important;
+    }
+
+    /* never end a page with a heading! */
+    h1, h2, h3, h4, .panel-heading {
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    /* try to avoid page breaks before panel content */
+    .panel-body {
+        page-break-before: avoid !important;
+    }
+
+    /* hide elements for printing */
+    header, nav, aside, footer {
+        display: none !important;
+    }
+
+    body {
+        /* black serif text is ideal for printouts */
+        color: black !important;
+        font-size: 10pt !important;
+
+        /* dont display background colors or images */
+        background: none !important;
+
+        /* let the printer set margins */
+        width: auto;
+        margin: 0;
+        padding: 0;
+
+    }
+
+    /* use monospace font for program codes */
+    code {
+        font-family: monospace;
+        font-weight: bold;
+    }
+
+    /* add URL info to external links */
+    a[href^="http"]:after{
+        content: " (Link: " attr(href) ") ";
+    }
+
+    /* add URL info to internal links, */
+    /* requires link to hompage */
+    a[href^="/"]:after{
+        content: " (Link: http://bcitcomp.ca" attr(href) ") ";
+    }
 }
