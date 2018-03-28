@@ -1,0 +1,19 @@
+# .htaccess
+# ------------
+# the .htaccess file customizes how the server will behave
+# comments in .htaccess begin with a number sign (like this line does)
+
+# Disable directory browsing
+Options All -Indexes
+
+# Ensure server uses correct character encoding
+AddDefaultCharset UTF-8
+
+# Server will use British Columbia time zone
+SetEnv TZ Canada/Pacific
+
+# ErrorDocument <errorNumber> <path>
+# Direct 'Page not found' errors to a specified page
+ErrorDocument 404 errors/404.html
+# Direct 'Access Forbidden' errors to a specified page
+ErrorDocument 403 errors/404.html
