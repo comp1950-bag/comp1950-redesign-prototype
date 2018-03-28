@@ -1,5 +1,9 @@
 # comp1950-redesign-prototype
 
+## NOTE
+
+Be careful when uploading to your own COMP 1950, almost all the links (including in .htacess) needs to be updated since we don't have server root access.
+
 ## TODO List
 
 1. Main
