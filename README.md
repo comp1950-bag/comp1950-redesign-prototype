@@ -3,12 +3,12 @@
 ## TODO List
 
 1. Main
-* At least 3 sample pages: home, lecture 1, sample online quiz page
+* (DONE) At least 3 sample pages: home, lecture 1, sample online quiz page
 * (DONE) A layout responsive to mobile clients as well as desktops
-* Printer friendly styles
-* SEO optimization
+* (BUG) Printer friendly styles
+* (DONE) SEO optimization
 
 2. Additional Project Requirements. Both the meta site and prototype site must include:
 * (DONE) CSS reset
-* Valid HTML5, CSS
-* Commented, well-tabbed, readable code
+* (DONE) Valid HTML5, CSS
+* (DONE) Commented, well-tabbed, readable code
