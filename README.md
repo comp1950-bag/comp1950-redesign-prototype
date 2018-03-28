@@ -3,7 +3,11 @@
 ## TODO List
 
 1. Main
-* (DONE) At least 3 sample pages: home, lecture 1, sample online quiz page
+=======
+* At least 3 sample pages: 
+    - home, (DONE)
+    - lecture 1, (DONE)
+    - sample online quiz page (DONE)
 * (DONE) A layout responsive to mobile clients as well as desktops
 * (BUG) Printer friendly styles
 * (DONE) SEO optimization
