@@ -1,3 +1,7 @@
+/*
+ * Authors: Gustavo Rocha de Almeida Guimaraes
+ */
+
 $(document).ready(function(){
 
 	var actualQuizz = undefined;
@@ -8,12 +12,12 @@ $(document).ready(function(){
 				if(quizzId == quizzes[index].quizzId){
 					actualQuizz = createQuizz(targetId, quizzes[index]);
 				}
-			}	
+			}
 		}
 	}
 	function createQuizz(targetId, quizzContent){
 
-		/* 
+		/*
 		<div id="quizz-container">
 			<p>question</p>
 			<hidden id="question-id" value="question-id"/>
@@ -67,7 +71,7 @@ $(document).ready(function(){
 		this.quizzTime = $("<span id='"+this.QUIZZ_TIME_ID+"'></span>").text(getFormattedTime(quizzContent.quizzTime));
 		this.quizzQuestionContainer = $("<div id='"+CONTAINER_ID+"'></div>");
 		this.quizzQuestionContainer.addClass(this.QUIZZ_QUESTION_CONTAINER_CLASS);
-		
+
 		this.quizzTimeContainer = $("<div></div>");
 		this.quizzTimeContainer.addClass(this.QUIZZ_TIMER_CLASS);
 		this.quizzTimeContainer.append($("<i class='fa fa-clock-o'>"));
@@ -91,7 +95,7 @@ $(document).ready(function(){
 					that.quizzQuestionContainer.empty();
 					that.quizzQuestionContainer.append($("<p>Quizz is Over</p>"));
 				}else{
-					that.quizzTime.text(getFormattedTime(that.timeCounter));	
+					that.quizzTime.text(getFormattedTime(that.timeCounter));
 				}
 			}, 1000)
 		});
@@ -108,7 +112,7 @@ $(document).ready(function(){
 			var seconds = timeSeconds % 60;
 			return pad(minutes,2)+":"+pad(seconds,2);
 		}
-		
+
 		function submitQuizz(){
 			clearInterval(that.timer);
 			that.quizzQuestionContainer.empty();
@@ -116,7 +120,7 @@ $(document).ready(function(){
 		}
 
 		function createActualQuestion(){
-			
+
 			that.quizzQuestionContainer.empty();
 
 			that.questionParagraph = $("<p id='"+QUESTION_PARAGRAPH_ID+"'></p>");
@@ -130,7 +134,7 @@ $(document).ready(function(){
 			//Configure the question enunciate
 			that.questionParagraph.text((that.actualQuestion+1)+". "+question.question);
 			that.quizzQuestionContainer.append(that.questionParagraph);
-			
+
 			if(that.actualQuestion > 0){
 				that.backButton = $("<span class='fa fa-arrow-circle-left'> Back </span>");
 				that.backButton.addClass(that.QUIZZ_BUTTON_BACK_CLASS);
@@ -141,7 +145,7 @@ $(document).ready(function(){
 
 				that.quizzQuestionContainer.append(that.backButton);
 			}
-			
+
 			if(that.actualQuestion < (that.quizz.questions.length-1)){
 				that.nextButton = $("<span class='fa fa-arrow-circle-right'> Next </span>");
 				that.nextButton.addClass(that.QUIZZ_BUTTON_NEXT_CLASS);
@@ -171,7 +175,7 @@ $(document).ready(function(){
 
 				}
 			}else{
-				
+
 				that.answerForm.append($("<textarea id='"+that.ANSWER_TEXTAREA_ID+"'></textarea>"));
 			}
 			that.saveButton = $("<span class='fa fa-save'> Save </span>");
@@ -184,7 +188,7 @@ $(document).ready(function(){
 				}else{
 					answer = $("#"+that.ANSWER_TEXTAREA_ID).val();
 				}
-				
+
 				that.quizz.questions[that.actualQuestion].studentAnswer = answer;
 				console.log("After save: "+JSON.stringify(that.quizz.questions[that.actualQuestion]));
 			});
@@ -207,23 +211,23 @@ $(document).ready(function(){
 					}
 				}
 				submitQuizz();
-				
+
 			});
 			that.answerForm.append(that.submitButton);
 
 			if(question.studentAnswer){
 				if(question.type.toUpperCase() == 'M'){
-					$('input[name='+that.RADIO_GROUP_NAME+'][value='+question.studentAnswer+']').prop('checked', true);	
+					$('input[name='+that.RADIO_GROUP_NAME+'][value='+question.studentAnswer+']').prop('checked', true);
 				}else{
 					$("#"+that.ANSWER_TEXTAREA_ID).text(question.studentAnswer);
 				}
 			}
-			
+
 		}
 		return that;
 	}
 
-	var quizzes = [{ 
+	var quizzes = [{
 		quizzId: "q01",
 		quizzName: "quizz 1",
 		quizzTime: 300,
@@ -266,7 +270,7 @@ $(document).ready(function(){
 		},
 		]
 	},
-	{ 
+	{
 		quizzId: "q02",
 		quizzName: "Quizz 2",
 		quizzTime: 300,
